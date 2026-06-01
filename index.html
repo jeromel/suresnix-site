@@ -879,30 +879,55 @@
 
         <div class="contact-form">
           <h3>Nous écrire</h3>
-          <p style="color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:28px;">
-            Un clic sur le bouton ci-dessous ouvre votre application mail
-            avec notre adresse déjà renseignée. Simple, direct, sans intermédiaire.
-          </p>
-          <a href="mailto:Ultimate.suresnes@hotmail.com?subject=Contact%20Suresnix"
-             class="btn btn-primary"
-             style="width:100%;justify-content:center;font-size:1rem;padding:14px 24px;">
-            ✉️ Envoyer un email
-          </a>
-          <p style="margin-top:16px;font-size:.82rem;color:var(--muted);text-align:center;">
-            Ultimate.suresnes@hotmail.com
+          <p style="color:var(--muted);font-size:.92rem;line-height:1.75;margin-bottom:20px;">
+            Remplissez le formulaire ci-dessous — un clic sur "Envoyer"
+            ouvrira votre application mail avec tout pré-rempli.
           </p>
 
-          <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
-            <p style="font-size:.88rem;font-weight:700;color:var(--dark);margin-bottom:12px;">
-              Vous pouvez aussi nous écrire directement en précisant :
-            </p>
-            <ul style="font-size:.88rem;color:var(--muted);line-height:1.9;padding-left:20px;">
-              <li>Votre prénom et nom</li>
-              <li>Votre âge (ou celui de votre enfant)</li>
-              <li>Votre niveau en Ultimate (débutant, intermédiaire, confirmé)</li>
-              <li>La séance qui vous intéresse (lundi ou jeudi)</li>
-            </ul>
-          </div>
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" autocomplete="given-name" />
+              </div>
+              <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" placeholder="Votre nom" autocomplete="family-name" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="age">Âge (ou celui de votre enfant)</label>
+              <input type="text" id="age" name="age" placeholder="ex : 14 ans, 32 ans…" />
+            </div>
+            <div class="form-group">
+              <label for="niveau">Niveau en Ultimate</label>
+              <select id="niveau" name="niveau">
+                <option value="">Choisir…</option>
+                <option value="Débutant (jamais joué)">Débutant — jamais joué</option>
+                <option value="Intermédiaire (quelques expériences)">Intermédiaire — quelques expériences</option>
+                <option value="Confirmé (pratique régulière)">Confirmé — pratique régulière</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="seance">Séance qui m'intéresse</label>
+              <select id="seance" name="seance">
+                <option value="">Choisir…</option>
+                <option value="Lundi 20h–22h (seniors, U20, U17)">Lundi 20h–22h — Seniors, U20, U17</option>
+                <option value="Jeudi 18h–20h (U17, U20)">Jeudi 18h–20h — U17, U20</option>
+                <option value="Les deux">Les deux</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message (optionnel)</label>
+              <textarea id="message" name="message" placeholder="Une question, une précision…"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">✉️ Envoyer le message</button>
+          </form>
+
+          <p style="margin-top:14px;font-size:.8rem;color:var(--muted);text-align:center;">
+            Votre client mail s'ouvrira avec le message pré-rempli.<br>
+            Adresse : <strong>Ultimate.suresnes@hotmail.com</strong>
+          </p>
         </div>
 
       </div>
@@ -949,5 +974,32 @@
 
 
 
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var prenom  = document.getElementById('prenom').value.trim();
+    var nom     = document.getElementById('nom').value.trim();
+    var age     = document.getElementById('age').value.trim();
+    var niveau  = document.getElementById('niveau').value;
+    var seance  = document.getElementById('seance').value;
+    var message = document.getElementById('message').value.trim();
+
+    var subject = 'Contact Suresnix' + (prenom || nom ? ' – ' + prenom + ' ' + nom : '');
+
+    var body = '';
+    if (prenom || nom)  body += 'Prénom / Nom : ' + prenom + ' ' + nom + '\n';
+    if (age)            body += 'Âge : ' + age + '\n';
+    if (niveau)         body += 'Niveau : ' + niveau + '\n';
+    if (seance)         body += 'Séance souhaitée : ' + seance + '\n';
+    if (message)        body += '\nMessage :\n' + message;
+
+    var mailto = 'mailto:Ultimate.suresnes@hotmail.com'
+               + '?subject=' + encodeURIComponent(subject)
+               + '&body='    + encodeURIComponent(body);
+
+    window.location.href = mailto;
+  });
+</script>
 </body>
 </html>
